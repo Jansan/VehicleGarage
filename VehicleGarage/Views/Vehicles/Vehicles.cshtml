@@ -1,0 +1,47 @@
+﻿@model IEnumerable<VehicleGarage.Models.ViewModels.VehicleViewModel>
+
+@{
+    ViewData["Title"] = "Vehicles";
+
+}
+<h1 class="py-3">Vehicles</h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Vehicle Type
+            </th>
+            <th>
+                Registration number
+            </th>
+
+            <th>
+                Arrival time
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.VehicleType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegNum)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.ArrivalTime)
+                </td>
+                <td>
+
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Unpark</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
