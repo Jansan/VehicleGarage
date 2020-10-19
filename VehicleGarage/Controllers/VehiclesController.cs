@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VehicleGarage.Data;
 using VehicleGarage.Models;
+using VehicleGarage.Models.ViewModels;
 
 namespace VehicleGarage.Controllers
 {
@@ -23,6 +24,20 @@ namespace VehicleGarage.Controllers
         public async Task<IActionResult> Index()
         {
             return View(await _context.Vehicle.ToListAsync());
+        }
+
+        // GET: Vehicles
+        public async Task<IActionResult> Vehicles()
+        {
+            var model = await _context.Vehicle.Select(v => new VehicleViewModel
+            {
+                Id = v.Id,
+                VehicleType = v.VehicleType,
+                RegNum = v.RegNum,
+                ArrivalTime = v.ArrivalTime,
+            }).ToListAsync();
+
+            return View(model);
         }
 
         // GET: Vehicles/Details/5
