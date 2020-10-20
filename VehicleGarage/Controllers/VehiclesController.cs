@@ -101,7 +101,17 @@ namespace VehicleGarage.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicle.FindAsync(id);
+            var vehicle = await _context.Vehicle
+                .Select(e => new EditViewModel
+                {
+                    Id = e.Id,
+                    VehicleType = e.VehicleType,
+                    Color = e.Color,
+                    Brand = e.Brand,
+                    Model = e.Model,
+                    NumWheels = e.NumWheels
+                }).FirstOrDefaultAsync(v => v.Id == id);
+
             if (vehicle == null)
             {
                 return NotFound();
@@ -114,19 +124,30 @@ namespace VehicleGarage.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleType,RegNum,Color,Brand,Model,NumWheels")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(int id, EditViewModel editViewModel)
         {
-            if (id != vehicle.Id)
+            if (id != editViewModel.Id)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                var vehicle = new Vehicle
+                {
+                    Id = editViewModel.Id,
+                    VehicleType = editViewModel.VehicleType,
+                    Color = editViewModel.Color,
+                    Brand = editViewModel.Brand,
+                    Model = editViewModel.Model,
+                    NumWheels = editViewModel.NumWheels
+                };
                 try
                 {
                     _context.Entry(vehicle).State = EntityState.Modified;
                     _context.Entry(vehicle).Property(v => v.ArrivalTime).IsModified = false;
+                    _context.Entry(vehicle).Property(v => v.RegNum).IsModified = false;
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -142,7 +163,7 @@ namespace VehicleGarage.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicle);
+            return View(editViewModel);
         }
 
         // GET: Vehicles/Delete/5
