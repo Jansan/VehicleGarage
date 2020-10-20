@@ -57,7 +57,27 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Unpark" class="btn btn-danger" /> |
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Unpark</button> |
         <a asp-action="Index">Back to Garage</a>
+
+        <div class="container">
+            <div class="modal fade" id="myModal" role="dialog">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Would u like a Receipt?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <input type="submit" class="btn btn-primary" asp-action="Receipt" asp-for="Id" value="Yes" />
+                            <input type="submit" class="btn btn-danger" asp-action="Delete" value="No" />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Go Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
 </div>

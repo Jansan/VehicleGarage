@@ -174,6 +174,24 @@ namespace VehicleGarage.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        // Receipt
+        public async Task<IActionResult> Receipt(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            var vehicle = await _context.Vehicle.FirstOrDefaultAsync(m => m.Id == id);
+
+            if(vehicle == null)
+            {
+                return NotFound();
+            }
+
+            return View(vehicle);
+        }
+
         private bool VehicleExists(int id)
         {
             return _context.Vehicle.Any(e => e.Id == id);
