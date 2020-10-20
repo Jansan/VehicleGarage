@@ -81,6 +81,17 @@ namespace VehicleGarage.Controllers
             return View(vehicle);
         }
 
+        // UniqueRegNum
+        [AcceptVerbs("GET", "POST")]
+        public IActionResult UniqueRegNum(string regNum)
+        {
+            if(_context.Vehicle.Any(v => v.RegNum == regNum))
+            {
+                return Json("That registration number already is among the parked vehicles.");
+            }
+            return Json(true);
+        }
+
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
