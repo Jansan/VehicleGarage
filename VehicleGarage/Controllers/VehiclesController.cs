@@ -74,6 +74,7 @@ namespace VehicleGarage.Controllers
             if (ModelState.IsValid)
             {
                 vehicle.ArrivalTime = DateTime.Now;
+                vehicle.RegNum.ToUpper();
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
