@@ -114,7 +114,7 @@ namespace VehicleGarage.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleType,RegNum,Color,Brand,Model,NumWheels,ArrivalTime")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,VehicleType,RegNum,Color,Brand,Model,NumWheels")] Vehicle vehicle)
         {
             if (id != vehicle.Id)
             {
@@ -125,7 +125,8 @@ namespace VehicleGarage.Controllers
             {
                 try
                 {
-                    _context.Update(vehicle);
+                    _context.Entry(vehicle).State = EntityState.Modified;
+                    _context.Entry(vehicle).Property(v => v.ArrivalTime).IsModified = false;
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
